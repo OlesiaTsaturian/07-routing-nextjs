@@ -11,21 +11,37 @@ const api = axios.create({
   },
 });
 
+export interface FetchNotesParams {
+  page: number;
+  perPage: number;
+  search?: string;
+  tag?: string;
+}
+
 interface FetchNotesResponse {
   notes: Note[];
   totalPages: number;
 }
 
 export const fetchNotes = async (
-  search: string,
-  page: number,
-  perPage: number,
+  params: FetchNotesParams,
 ): Promise<FetchNotesResponse> => {
-  const response = await api.get<FetchNotesResponse>('/notes', {
-    params: { search, page, perPage },
+  const { data } = await api.get<FetchNotesResponse>('/notes', {
+    params,
   });
-  return response.data;
+
+  return data;
 };
+
+//   search: string,
+//   page: number,
+//   perPage: number,
+// ): Promise<FetchNotesResponse> => {
+//   const response = await api.get<FetchNotesResponse>('/notes', {
+//     params: { search, page, perPage },
+//   });
+//   return response.data;
+
 export interface CreateParams {
   title: string;
   content: string;
